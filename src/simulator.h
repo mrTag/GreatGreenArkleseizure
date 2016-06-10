@@ -21,7 +21,7 @@ namespace gga {
 
         template<typename SimRuleClass> 
         SimRuleClass* AddSimulationRule(){
-			SimRuleClass* simRuleObj = new SimModClass();
+			SimRuleClass* simRuleObj = new SimRuleClass();
             mSimulationRules.push_back(simRuleObj);
 			return simRuleObj;
         }

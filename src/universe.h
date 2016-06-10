@@ -9,6 +9,7 @@ namespace gga {
         Vector2 Position;
         Vector2 Velocity;
 		int Property;
+		int Flags;
 
 		Particle() : Property(0) {}
     };
@@ -20,6 +21,11 @@ namespace gga {
 		Universe() :
 			Particles(NULL), NumberOfParticles(0)
 		{}
+		
+		~Universe() {
+			delete[] Particles;
+			Particles = NULL;
+		}
 
         void GrowUniverse(int newSize){
             Particle* temp = new Particle[newSize];

@@ -103,7 +103,7 @@ fix16_t fix16_log(fix16_t inValue)
 
 
 
-static inline fix16_t fix16_rs(fix16_t x)
+static __inline fix16_t fix16_rs(fix16_t x)
 {
 	#ifdef FIXMATH_NO_ROUNDING
 		return (x >> 1);
