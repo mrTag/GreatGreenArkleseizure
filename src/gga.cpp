@@ -3,6 +3,10 @@
 #include "simulator.h"
 #include "velocityrule.h"
 
+// fixes missing reference error in gcc builds
+// see: http://stackoverflow.com/questions/329059/what-is-gxx-personality-v0-for/329195#329195
+void *__gxx_personality_v0;
+
 int main()
 {
     // testing simulator
