@@ -1,43 +1,68 @@
 solution "gga"
    configurations {"Release", "Debug" }
    location (_OPTIONS["to"])
-
+      
 -------------------------------------
--- freeglut static lib
+-- glfw static lib
 -------------------------------------
-   project "freeglut_proj"
-   targetname "freeglut_static"
+   project "glfw_proj"
+   targetname "glfw"
    language "C"
    kind "StaticLib"
    defines {
-      "FREEGLUT_STATIC"
+      "_CRT_SECURE_NO_WARNINGS"
    }
-   
+
    includedirs {
-      "./3rdParty/freeglut/include"
+      "./3rdParty/glfw/include"
    }
 
    files {
-      "./3rdParty/freeglut/src/**.h",
-      "./3rdParty/freeglut/src/**.c"
+      "./3rdParty/glfw/src/internal.h",
+      "./3rdParty/glfw/src/glfw_config.h",
+      "./3rdParty/glfw/include/GLFW/glfw3.h",
+      "./3rdParty/glfw/include/GLFW/glfw3native.h",
+      "./3rdParty/glfw/src/context.c",
+      "./3rdParty/glfw/src/init.c",
+      "./3rdParty/glfw/src/input.c",
+      "./3rdParty/glfw/src/monitor.c",
+      "./3rdParty/glfw/src/window.c"
    }
 
    configuration "windows"
    defines {
-      "_WIN32",
-      "TARGET_HOST_MS_WINDOWS"
+      "_GLFW_WIN32"
    }
+   files {
+      "./3rdParty/glfw/src/vulkan.c",
+      "./3rdParty/glfw/src/win32_platform.h",
+      "./3rdParty/glfw/src/win32_joystick.h",
+      "./3rdParty/glfw/src/wgl_context.h",
+      "./3rdParty/glfw/src/egl_context.c",
+      "./3rdParty/glfw/src/win32_init.c",
+      "./3rdParty/glfw/src/win32_joystick.c",
+      "./3rdParty/glfw/src/win32_monitor.c",
+      "./3rdParty/glfw/src/win32_time.c",
+      "./3rdParty/glfw/src/win32_tls.c",
+      "./3rdParty/glfw/src/win32_window.c",
+      "./3rdParty/glfw/src/wgl_context.c",
+      "./3rdParty/glfw/src/egl_context.c"
+   }
+   targetdir "./lib"
+   links       { "gdi32" }
    
    configuration "Debug"
       defines     { "_DEBUG" }
       flags       { "Symbols" }
+      links       { "msvcrtd" }
       targetdir   "./lib/debug"
 
    configuration "Release"
       defines     { "NDEBUG" }
       flags       { "OptimizeSize" }
+      links       { "msvcrt" }
       targetdir   "./lib/release"
-
+      
 -------------------------------------
 -- glew static lib
 -------------------------------------
@@ -76,7 +101,6 @@ solution "gga"
    targetname "gga"
    language "C++"
    kind "ConsoleApp"
-   defines { "FREEGLUT_STATIC" }
    
    flags {
       "No64BitChecks",
@@ -85,8 +109,8 @@ solution "gga"
    
    includedirs {
       "./lib",
-      "./3rdParty/freeglut/include",
-      "./3rdParty/glew/include"
+      "./3rdParty/glew/include",
+      "./3rdParty/glfw/include/"
    }
 
    libdirs {
@@ -94,7 +118,7 @@ solution "gga"
    }
 
    links {
-      "freeglut_proj",
+      "glfw_proj",
       "glew_proj"
    }
    
@@ -107,13 +131,13 @@ solution "gga"
       defines     { "_DEBUG" }
       flags       { "Symbols" }
       libdirs     { "./lib/debug" }
-      links       { "glew", "freeglut_static" }
+      links       { "glew", "glfw" }
 
    configuration "Release"
       defines     { "NDEBUG" }
       flags       { "OptimizeSize" }
       libdirs     { "./lib/release" }
-      links       { "glew", "freeglut_static" }
+      links       { "glew", "glfw" }
 
    configuration "windows"
       defines     { "_WIN32" }
