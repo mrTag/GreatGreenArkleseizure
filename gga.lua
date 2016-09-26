@@ -28,11 +28,12 @@ solution "gga"
       "./3rdParty/glfw/src/monitor.c",
       "./3rdParty/glfw/src/window.c"
    }
-
+   
    configuration "windows"
    defines {
       "_GLFW_WIN32"
    }
+   
    files {
       "./3rdParty/glfw/src/vulkan.c",
       "./3rdParty/glfw/src/win32_platform.h",
