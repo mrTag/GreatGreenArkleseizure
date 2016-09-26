@@ -83,16 +83,25 @@ solution "gga"
    }
    
    configuration "windows"
-      targetdir "./lib"
+   defines {
+      "WIN32",
+      "_LIB",
+      "WIN32_LEAN_AND_MEAN",
+      "GLEW_STATIC"
+   }
+   
+   targetdir "./lib"
 
    configuration "Debug"
       defines     { "_DEBUG" }
       flags       { "Symbols" }
+      links       { "msvcrtd" }
       targetdir   "./lib/debug"
 
    configuration "Release"
       defines     { "NDEBUG" }
       flags       { "OptimizeSize" }
+      links       { "msvcrt" }
       targetdir   "./lib/release"
 
 -------------------------------------   
