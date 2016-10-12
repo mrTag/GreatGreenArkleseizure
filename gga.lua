@@ -55,13 +55,11 @@ solution "gga"
    configuration "Debug"
       defines     { "_DEBUG" }
       flags       { "Symbols" }
-      links       { "msvcrtd" }
       targetdir   "./lib/debug"
 
    configuration "Release"
       defines     { "NDEBUG" }
       flags       { "OptimizeSize" }
-      links       { "msvcrt" }
       targetdir   "./lib/release"
       
 -------------------------------------
@@ -95,13 +93,11 @@ solution "gga"
    configuration "Debug"
       defines     { "_DEBUG" }
       flags       { "Symbols" }
-      links       { "msvcrtd" }
       targetdir   "./lib/debug"
 
    configuration "Release"
       defines     { "NDEBUG" }
       flags       { "OptimizeSize" }
-      links       { "msvcrt" }
       targetdir   "./lib/release"
 
 -------------------------------------   
@@ -141,13 +137,13 @@ solution "gga"
       defines     { "_DEBUG" }
       flags       { "Symbols" }
       libdirs     { "./lib/debug" }
-      links       { "glew", "glfw" }
+      links       { "glew", "glfw", "msvcrtd" }
 
    configuration "Release"
       defines     { "NDEBUG" }
       flags       { "OptimizeSize" }
       libdirs     { "./lib/release" }
-      links       { "glew", "glfw" }
+      links       { "glew", "glfw", "msvcrt" }
 
    configuration "windows"
       defines     { "_WIN32" }
