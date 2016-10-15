@@ -33,7 +33,12 @@ solution "gga"
    defines {
       "_GLFW_WIN32"
    }
-   
+
+   configuration { "windows", "gmake" }
+      includedirs {
+         "./3rdParty/glfw/deps/mingw"     
+      }
+
    files {
       "./3rdParty/glfw/src/vulkan.c",
       "./3rdParty/glfw/src/win32_platform.h",
@@ -50,7 +55,6 @@ solution "gga"
       "./3rdParty/glfw/src/egl_context.c"
    }
    targetdir "./lib"
-   links       { "gdi32" }
    
    configuration "Debug"
       defines     { "_DEBUG" }
@@ -87,7 +91,7 @@ solution "gga"
       "WIN32_LEAN_AND_MEAN",
       "GLEW_STATIC"
    }
-   
+
    targetdir "./lib"
 
    configuration "Debug"
@@ -137,13 +141,13 @@ solution "gga"
       defines     { "_DEBUG" }
       flags       { "Symbols" }
       libdirs     { "./lib/debug" }
-      links       { "glew", "glfw", "msvcrtd" }
+      links       { "glew", "glfw", "gdi32", "opengl32", "msvcrtd" }
 
    configuration "Release"
       defines     { "NDEBUG" }
       flags       { "OptimizeSize" }
       libdirs     { "./lib/release" }
-      links       { "glew", "glfw", "msvcrt" }
+      links       { "glew", "glfw", "gdi32", "opengl32", "msvcrt" }
 
    configuration "windows"
       defines     { "_WIN32" }
