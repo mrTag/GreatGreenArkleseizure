@@ -33,11 +33,6 @@ solution "gga"
       "_GLFW_WIN32"
    }
 
-   configuration { "windows", "gmake" }
-      includedirs {
-         "./3rdParty/glfw/deps/mingw"     
-      }
-
    files {
       "./3rdParty/glfw/src/vulkan.c",
       "./3rdParty/glfw/src/win32_platform.h",
@@ -54,6 +49,11 @@ solution "gga"
       "./3rdParty/glfw/src/egl_context.c"
    }
    targetdir "./lib"
+
+   configuration { "windows", "gmake" }
+      includedirs {
+         "./3rdParty/glfw/deps/mingw"     
+      }
    
    configuration "Debug"
       defines     { "_DEBUG" }
