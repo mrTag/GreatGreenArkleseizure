@@ -6,7 +6,6 @@ solution "gga"
 -- glfw static lib
 -------------------------------------
    project "glfw_proj"
-   targetname "glfw"
    language "C"
    kind "StaticLib"
    defines {
@@ -60,17 +59,18 @@ solution "gga"
       defines     { "_DEBUG" }
       flags       { "Symbols" }
       targetdir   "./lib/debug"
+      targetname "glfwd"
 
    configuration "Release"
       defines     { "NDEBUG" }
       flags       { "OptimizeSize" }
       targetdir   "./lib/release"
+      targetname "glfw"
       
 -------------------------------------
 -- glew static lib
 -------------------------------------
    project "glew_proj"
-   targetname "glew"
    language "C"
    kind "StaticLib"
 
@@ -89,7 +89,8 @@ solution "gga"
       "WIN32",
       "_LIB",
       "WIN32_LEAN_AND_MEAN",
-      "GLEW_STATIC"
+      "GLEW_STATIC",
+      "_CRT_SECURE_NO_WARNINGS"
    }
 
    targetdir "./lib"
@@ -98,11 +99,13 @@ solution "gga"
       defines     { "_DEBUG" }
       flags       { "Symbols" }
       targetdir   "./lib/debug"
+      targetname  "glewd"
 
    configuration "Release"
       defines     { "NDEBUG" }
       flags       { "OptimizeSize" }
       targetdir   "./lib/release"
+      targetname  "glew"
 
 -------------------------------------   
 -- top level gga project
@@ -141,13 +144,13 @@ solution "gga"
       defines     { "_DEBUG" }
       flags       { "Symbols" }
       libdirs     { "./lib/debug" }
-      links       { "glew", "glfw", "gdi32", "opengl32", "msvcrtd" }
+      links       { "msvcrtd", "gdi32", "opengl32", "glewd", "glfwd" }
 
    configuration "Release"
       defines     { "NDEBUG" }
       flags       { "OptimizeSize" }
       libdirs     { "./lib/release" }
-      links       { "glew", "glfw", "gdi32", "opengl32", "msvcrt" }
+      links       { "msvcrt", "gdi32", "opengl32", "glew", "glfw" }
 
    configuration "windows"
       defines     { "_WIN32" }
