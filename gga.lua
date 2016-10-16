@@ -90,6 +90,7 @@ solution "gga"
       "_LIB",
       "WIN32_LEAN_AND_MEAN",
       "GLEW_STATIC",
+	  "GLEW_BUILD",
       "_CRT_SECURE_NO_WARNINGS"
    }
 
@@ -140,6 +141,10 @@ solution "gga"
       "./src/**.cpp"
    }
 
+   defines {
+	  "GLEW_STATIC"
+   }
+   
    configuration "Debug"
       defines     { "_DEBUG" }
       flags       { "Symbols" }
