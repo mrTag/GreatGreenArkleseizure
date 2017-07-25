@@ -6,6 +6,7 @@
 #include "GL\glew.h"
 #include "GLFW\glfw3.h"
 
+#include "memory/allocators.h"
 #include "scenegraph/transform.h"
 
 using namespace std;

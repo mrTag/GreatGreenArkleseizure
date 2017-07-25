@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "*.mustache": "html",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "xmemory0": "cpp"
     }
 }

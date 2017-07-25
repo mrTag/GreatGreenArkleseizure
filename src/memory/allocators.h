@@ -1,6 +1,21 @@
 #ifndef allocators_h__
 #define allocators_h__
 
+#include <assert.h>
+
+// disallow default memory allocation via new operator
+void* operator new (size_t size)
+{
+    assert(0);
+    return 0;
+}
+
+void* operator new[] (size_t size)
+{
+    assert(0);
+    return 0;
+}
+
 class Allocator
 {
     public:

@@ -149,7 +149,7 @@ solution "gga"
       defines     { "_DEBUG" }
       flags       { "Symbols" }
       libdirs     { "./lib/debug" }
-      links       { "msvcrtd", "gdi32", "opengl32", "glewd", "glfwd" }
+      links       { "msvcrt", "gdi32", "opengl32", "glewd", "glfwd" }
 
    configuration "Release"
       defines     { "NDEBUG" }

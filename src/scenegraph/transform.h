@@ -5,8 +5,7 @@
 #include "glm/gtc/quaternion.hpp"
 
 namespace scenegraph {
-    class transform {
-        private:
+    struct transform {
         glm::vec3 _position;
         glm::quat _orientation;
         glm::vec3 _scale;
