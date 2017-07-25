@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "*.mustache": "html",
+        "algorithm": "cpp"
+    }
+}

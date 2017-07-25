@@ -52,7 +52,7 @@ solution "gga"
 
    configuration { "windows", "gmake" }
       includedirs {
-         "./3rdParty/glfw/deps/mingw"     
+         "./3rdParty/glfw/deps/mingw"
       }
    
    configuration "Debug"
@@ -124,7 +124,7 @@ solution "gga"
    includedirs {
       "./lib",
       "./3rdParty/glew/include",
-      "./3rdParty/glfw/include/"
+      "./3rdParty/glfw/include"
    }
 
    libdirs {

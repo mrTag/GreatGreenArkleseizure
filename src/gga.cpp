@@ -1,12 +1,12 @@
 #include <iostream>
 #include <cstdlib>
 #include <stdio.h>
+#include <assert.h>
 
 #include "GL\glew.h"
 #include "GLFW\glfw3.h"
 
-#include "simulator.h"
-#include "velocityrule.h"
+#include "scenegraph/transform.h"
 
 using namespace std;
 
@@ -115,11 +115,10 @@ void free_resources()
 	glDeleteProgram(program);
 }
 
-void mainLoop(GLFWwindow* window, gga::Simulator* simulator)
+void mainLoop(GLFWwindow* window)
 {
 	while (!glfwWindowShouldClose(window))
 	{
-		simulator->Step();
 		glfwPollEvents();
 		render(window);
 	}
@@ -149,12 +148,8 @@ int main(int argc, char* argv[])
 	if (!init_resources())
 		exit(EXIT_FAILURE);
 
-    // testing simulator
-	gga::Simulator simulator;
-	simulator.AddSimulationRule<gga::VelocityRule>();
+	mainLoop(window);
 
-	mainLoop(window, &simulator);
-	
 	free_resources();
 	glfwDestroyWindow(window);
 	glfwTerminate();
