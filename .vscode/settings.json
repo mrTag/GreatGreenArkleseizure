@@ -2,6 +2,11 @@
     "files.associations": {
         "*.mustache": "html",
         "algorithm": "cpp",
-        "xmemory0": "cpp"
+        "xmemory0": "cpp",
+        "splitview.c": "cpp",
+        "mir_window.c": "cpp",
+        "events.c": "cpp",
+        "threads.c": "cpp",
+        "vulkan.c": "cpp"
     }
 }

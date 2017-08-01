@@ -4,13 +4,13 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/quaternion.hpp"
 
-namespace scenegraph {
-    struct transform {
+namespace Scenegraph {
+    struct Transform {
         glm::vec3 _position;
         glm::quat _orientation;
         glm::vec3 _scale;
-        transform* _parent;
-        transform* _children;
+        Transform* _parent;
+        Transform* _children;
         unsigned int _cildCount;
     };
 }

@@ -3,11 +3,14 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "GL\glew.h"
-#include "GLFW\glfw3.h"
+#include "GL/glew.h"
+#include "GLFW/glfw3.h"
+#include <glm/glm.hpp>
 
 #include "memory/allocators.h"
 #include "scenegraph/transform.h"
+#include "input/input.h"
+#include "rendering/rendering.h"
 
 using namespace std;
 
@@ -18,6 +21,14 @@ void *__gxx_personality_v0;
 // global variables
 GLuint program;
 GLint attribute_coord2d;
+Input::Mouse mouseInput;
+Rendering::Camera camera (
+	0.1f, 100.0f, 45.0f,
+	glm::vec3(0, 0, -4),
+	glm::vec3(0, 0, 0),
+	glm::vec3(0, 1, 0)
+);
+GLuint matrixID;
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -34,9 +45,10 @@ bool init_resources(void)
 	GLuint vs = glCreateShader(GL_VERTEX_SHADER);
 	const char* vs_source =
 		"#version 120\n"
+		"uniform mat4 MVP;"
 		"attribute vec2 coord2d;"
 		"void main(void) {"
-		"  gl_Position = vec4(coord2d, 0.0, 1.0);"
+		"  gl_Position = MVP * vec4(coord2d, 0.0, 1.0);"
 		"}";
 	glShaderSource(vs, 1, &vs_source, NULL);
 	glCompileShader(vs);
@@ -81,20 +93,26 @@ bool init_resources(void)
 		return false;
 	}
 
+	matrixID = glGetUniformLocation(vs, "MVP");
+
 	return true;
 }
 
 void render(GLFWwindow* window)
 {
+	glm::mat4 mvp = camera.GetViewProjectionMatrix();
+	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &mvp[0][0]);
+
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(program);
+	// TODO: make this a 3d triangle!
 	glEnableVertexAttribArray(attribute_coord2d);
 	GLfloat triangle_vertices[] = {
-		0.0, 0.8,
-		-0.8, -0.8,
-		0.8, -0.8
+		0.0f, 0.8f, 0.0f,
+		-0.8f, -0.8f, 0.0f,
+		0.8f, -0.8f, 0,0f
 	};
 
 	glVertexAttribPointer(
@@ -139,6 +157,8 @@ int main(int argc, char* argv[])
 	}
 	glfwMakeContextCurrent(window);
 	glfwSetKeyCallback(window, key_callback);
+
+	mouseInput.RegisterCursorCallbacks(window);
 
 	GLenum glew_status = glewInit();
 	if (glew_status != GLEW_OK) {
