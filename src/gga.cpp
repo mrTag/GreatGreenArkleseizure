@@ -20,15 +20,20 @@ void *__gxx_personality_v0;
 
 // global variables
 GLuint program;
-GLint attribute_coord2d;
 Input::Mouse mouseInput;
 Rendering::Camera camera (
-	0.1f, 100.0f, 45.0f,
-	glm::vec3(0, 0, -4),
-	glm::vec3(0, 0, 0),
+	0.1f, 100.0f, 60.0f,
+	glm::vec3(4, 3, 3),
+	glm::vec3(-4, -3, -3),
 	glm::vec3(0, 1, 0)
 );
 GLuint matrixID;
+GLuint vertexID;
+static const GLfloat triangle_vertices[] = {
+	0.0f, 0.8f, 0.0f,
+	-0.8f, -0.8f, 0.0f,
+	0.8f, -0.8f, 0.0f
+};
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -44,11 +49,11 @@ bool init_resources(void)
 	// compile vertex shader
 	GLuint vs = glCreateShader(GL_VERTEX_SHADER);
 	const char* vs_source =
-		"#version 120\n"
+		"#version 330 core\n"
+		"layout(location = 0) in vec3 vertexPosition_modelspace;"
 		"uniform mat4 MVP;"
-		"attribute vec2 coord2d;"
 		"void main(void) {"
-		"  gl_Position = MVP * vec4(coord2d, 0.0, 1.0);"
+		"  gl_Position = MVP * vec4(vertexPosition_modelspace, 1.0);"
 		"}";
 	glShaderSource(vs, 1, &vs_source, NULL);
 	glCompileShader(vs);
@@ -61,7 +66,7 @@ bool init_resources(void)
 	// compile fragment shader
 	GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
 	const char *fs_source =
-		"#version 120\n"
+		"#version 330 core\n"
 		"void main(void) {"
 		"  gl_FragColor[0] = 0.0;"
 		"  gl_FragColor[1] = 0.8;"
@@ -86,20 +91,18 @@ bool init_resources(void)
 		return false;
 	}
 
-	const char* attribute_name = "coord2d";
-	attribute_coord2d = glGetAttribLocation(program, attribute_name);
-	if (attribute_coord2d == -1) {
-		cerr << "Could not bind attribute " << attribute_name << endl;
-		return false;
-	}
+	glGenBuffers(1, &vertexID);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexID);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(triangle_vertices), triangle_vertices, GL_STATIC_DRAW);
 
-	matrixID = glGetUniformLocation(vs, "MVP");
+	matrixID = glGetUniformLocation(program, "MVP");
 
 	return true;
 }
 
 void render(GLFWwindow* window)
 {
+	camera.Update();
 	glm::mat4 mvp = camera.GetViewProjectionMatrix();
 	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &mvp[0][0]);
 
@@ -107,25 +110,19 @@ void render(GLFWwindow* window)
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(program);
-	// TODO: make this a 3d triangle!
-	glEnableVertexAttribArray(attribute_coord2d);
-	GLfloat triangle_vertices[] = {
-		0.0f, 0.8f, 0.0f,
-		-0.8f, -0.8f, 0.0f,
-		0.8f, -0.8f, 0,0f
-	};
-
+	glEnableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexID);
 	glVertexAttribPointer(
-		attribute_coord2d,	// attribute
-		2,					// number of elements (x, y)
-		GL_FLOAT,			// element type
-		GL_FALSE,			// take values as-is?
-		0,					// no extra data between each position
-		triangle_vertices	// pointer to triangle array
-		);
+		0,			// attribute
+		3,			// number of elements (x, y, z)
+		GL_FLOAT,	// element type
+		GL_FALSE,	// take values as-is?
+		0,			// no extra data between each position
+		(void*)0	// pointer to triangle array
+	);
 
 	glDrawArrays(GL_TRIANGLES, 0, 3);
-	glDisableVertexAttribArray(attribute_coord2d);
+	glDisableVertexAttribArray(0);
 	glfwSwapBuffers(window);
 }
 

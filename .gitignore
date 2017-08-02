@@ -39,6 +39,7 @@
 *.vcxproj*
 *.opensdf
 Makefile
+/.history
 
 # GNU-Emacs
 \#*#
