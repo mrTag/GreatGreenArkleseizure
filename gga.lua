@@ -123,6 +123,7 @@ solution "gga"
    
    includedirs {
       "./lib",
+      "./include",
       "./3rdParty/glew/include",
       "./3rdParty/glfw/include"
    }

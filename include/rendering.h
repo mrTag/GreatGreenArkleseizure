@@ -3,10 +3,11 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "scenegraph.h"
 
 namespace Rendering
 {
-    class Camera
+    class Camera : public Scenegraph::Component
     {
         private:
         float _fieldOfView;
@@ -21,9 +22,11 @@ namespace Rendering
         public:
         Camera();
         Camera(float near, float far, float fov, glm::vec3 position, glm::vec3 forward, glm::vec3 up);
-        void Update();
+        void FrameUpdate();
         glm::mat4 GetViewProjectionMatrix();
     };
+
+    
 }
 
 #endif // rendering_h__

@@ -8,9 +8,9 @@
 #include <glm/glm.hpp>
 
 #include "memory/allocators.h"
-#include "scenegraph/transform.h"
-#include "input/input.h"
-#include "rendering/rendering.h"
+#include "scenegraph.h"
+#include "input.h"
+#include "rendering.h"
 
 using namespace std;
 
@@ -20,14 +20,14 @@ void *__gxx_personality_v0;
 
 // global variables
 GLuint program;
-Input::Mouse mouseInput;
 Rendering::Camera camera (
-	0.1f, 100.0f, 60.0f,
+	0.1f, 100.0f, 45.0f,
 	glm::vec3(4, 3, 3),
 	glm::vec3(-4, -3, -3),
 	glm::vec3(0, 1, 0)
 );
 GLuint matrixID;
+GLuint colorID;
 GLuint vertexID;
 static const GLfloat triangle_vertices[] = {
 	0.0f, 0.8f, 0.0f,
@@ -67,10 +67,10 @@ bool init_resources(void)
 	GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
 	const char *fs_source =
 		"#version 330 core\n"
+		"uniform vec3 tri_color;"
+		"out vec3 color;"
 		"void main(void) {"
-		"  gl_FragColor[0] = 0.0;"
-		"  gl_FragColor[1] = 0.8;"
-		"  gl_FragColor[2] = 0.0;"
+		"  color = tri_color;"
 		"}";
 	glShaderSource(fs, 1, &fs_source, NULL);
 	glCompileShader(fs);
@@ -96,15 +96,26 @@ bool init_resources(void)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(triangle_vertices), triangle_vertices, GL_STATIC_DRAW);
 
 	matrixID = glGetUniformLocation(program, "MVP");
+	colorID = glGetUniformLocation(program, "tri_color");
 
 	return true;
 }
 
 void render(GLFWwindow* window)
 {
-	camera.Update();
 	glm::mat4 mvp = camera.GetViewProjectionMatrix();
 	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &mvp[0][0]);
+
+	glm::vec3 color(1.0, 0.0, 0.0);
+	if (Input::Mouse::GetButton(1))
+	{
+		color = glm::vec3(1.0, 1.0, 0.0);
+	}
+	else if (Input::Mouse::GetButton(0))
+	{
+		color = glm::vec3(0.0, 1.0, 0.0);
+	}
+	glUniform3fv(colorID, 1, &color[0]);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -136,6 +147,8 @@ void mainLoop(GLFWwindow* window)
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
+		camera.FrameUpdate();
+		Input::Mouse::FrameUpdate();
 		render(window);
 	}
 }
@@ -155,7 +168,7 @@ int main(int argc, char* argv[])
 	glfwMakeContextCurrent(window);
 	glfwSetKeyCallback(window, key_callback);
 
-	mouseInput.RegisterCursorCallbacks(window);
+	Input::Mouse::RegisterCursorCallbacks(window);
 
 	GLenum glew_status = glewInit();
 	if (glew_status != GLEW_OK) {
