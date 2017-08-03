@@ -21,10 +21,7 @@ void *__gxx_personality_v0;
 // global variables
 GLuint program;
 Rendering::Camera camera (
-	0.1f, 100.0f, 45.0f,
-	glm::vec3(4, 3, 3),
-	glm::vec3(-4, -3, -3),
-	glm::vec3(0, 1, 0)
+	0.1f, 100.0f, 45.0f
 );
 GLuint matrixID;
 GLuint colorID;

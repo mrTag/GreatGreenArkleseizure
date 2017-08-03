@@ -6,6 +6,28 @@
 
 namespace Scenegraph
 {
+    /*
+    template <typename T, class C>
+    struct UpdatingProperty
+    {
+        T _data;
+        void (C::*_updateCallback)() = NULL;
+        
+        UpdatingProperty(T initialData, void (C::*callback)())
+        {
+            _data = initialData;
+            _updateCallback = callback;
+        }
+
+        T& operator=(const T& other)
+        {
+            return _data = other;
+            if (_updateCallback != NULL) _updateCallback();
+        }
+        operator T() const { return _data; }
+    };
+    */
+
     struct Transform
     {
         glm::vec3 _position;
@@ -13,8 +35,12 @@ namespace Scenegraph
         glm::quat _orientation;
         Transform* _parent;
         void SetParent(Transform* parent);
-        glm::mat4 GetLocalSpaceModelMatrix();
-        glm::mat4 GetWorldSpaceModelMatrix();
+        glm::mat4 _localSpaceModelMatrix;
+        glm::mat4 _worldSpaceModelMatrix;
+        
+        // TODO: call these, as soon as position, scale, orientation, or parent changes
+        void UpdateLocalSpaceModelMatrix();
+        void UpdateWorldSpaceModelMatrix();
 
         /* TODO:
         void AddComponent(Component* c);

@@ -21,7 +21,7 @@ namespace Rendering
 
         public:
         Camera();
-        Camera(float near, float far, float fov, glm::vec3 position, glm::vec3 forward, glm::vec3 up);
+        Camera(float near, float far, float fov);
         void FrameUpdate();
         glm::mat4 GetViewProjectionMatrix();
     };

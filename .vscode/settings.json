@@ -8,6 +8,10 @@
         "events.c": "cpp",
         "threads.c": "cpp",
         "vulkan.c": "cpp",
-        "tinycthread.c": "cpp"
+        "tinycthread.c": "cpp",
+        "initializer_list": "cpp",
+        "type_traits": "cpp",
+        "vector": "cpp",
+        "xstring": "cpp"
     }
 }

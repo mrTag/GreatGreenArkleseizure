@@ -8,27 +8,25 @@ namespace Scenegraph
         _parent = parent;
     }
 
-    glm::mat4 Transform::GetLocalSpaceModelMatrix()
+    void Transform::UpdateLocalSpaceModelMatrix()
     {
-        glm::mat4 modelMatrix(1.0);
-        modelMatrix = glm::translate(modelMatrix, _position);
-        modelMatrix = glm::scale(modelMatrix, _scale);
+        _localSpaceModelMatrix = modelMatrix(1.0);
+        _localSpaceModelMatrix = glm::translate(_localSpaceModelMatrix, _position);
+        _localSpaceModelMatrix = glm::scale(_localSpaceModelMatrix, _scale);
         glm::mat4 rotationMatrix = quaternion::toMat4(_orientation);
-        modelMatrix *= rotationMatrix;
-        return modelMatrix;
+        _localSpaceModelMatrix *= rotationMatrix;
     }
 
-    glm::mat4 Transform::GetWorldSpaceModelMatrix()
+    void Transform::UpdateWorldSpaceModelMatrix()
     {
-        glm::mat4 modelMatrix = GetLocalSpaceModelMatrix();
+        _worldSpaceModelMatrix = GetLocalSpaceModelMatrix();
         Transform* currentParent = _parent;
         // go through all parents and multiply model matrices
         while(_currentParent != NULL)
         {
-            modelMatrix *= _currentParent.GetLocalSpaceModelMatrix();
+            _worldSpaceModelMatrix *= _currentParent.GetLocalSpaceModelMatrix();
             _currentParent = _currentParent._parent;
             if (_currentParent == this) break;
         }
-        return modelMatrix;
     }
 }
