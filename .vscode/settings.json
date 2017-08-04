@@ -8,6 +8,8 @@
         "events.c": "cpp",
         "threads.c": "cpp",
         "vulkan.c": "cpp",
-        "tinycthread.c": "cpp"
+        "tinycthread.c": "cpp",
+        "boing.c": "cpp",
+        "particles.c": "cpp"
     }
 }

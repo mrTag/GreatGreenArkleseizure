@@ -27,8 +27,8 @@ namespace Scenegraph
     class Component
     {
         protected:
-        Transform* transform;
-        bool enabled;
+        Transform* _transform;
+        bool _enabled;
 
         public:
         Component(Transform* t) : transform(t) {}

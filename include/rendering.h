@@ -20,8 +20,8 @@ namespace Rendering
         glm::mat4 _projectionMatrix;
 
         public:
-        Camera();
-        Camera(float near, float far, float fov, glm::vec3 position, glm::vec3 forward, glm::vec3 up);
+        Camera(Transform* t);
+        Camera(Transform* t, float near, float far, float fov);
         void FrameUpdate();
         glm::mat4 GetViewProjectionMatrix();
     };

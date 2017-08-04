@@ -3,6 +3,9 @@
 
 #include <assert.h>
 
+//#pragma warning(push)
+//#pragma warning(disable: 4101)
+
 // disallow default memory allocation via new operator
 void* operator new (size_t size)
 {
@@ -15,6 +18,8 @@ void* operator new[] (size_t size)
     assert(0);
     return 0;
 }
+
+//#pragma warning(pop)
 
 class Allocator
 {

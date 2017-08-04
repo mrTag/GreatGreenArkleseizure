@@ -5,9 +5,10 @@ namespace Rendering
     /************************************/
     /*              CAMERA              */
     /************************************/
-    Camera::Camera()
+    Camera::Camera(Transform* t)
     {
         // TODO: take transform as input
+        _transform = t;
         _near = 0.1f;
         _far = 100.0f;
         _fieldOfView = 45.0f;
@@ -19,6 +20,7 @@ namespace Rendering
     Camera::Camera(float near, float far, float fov)
     {
         // TODO: take transform as input
+        _transform = t;
         _near = near;
         _far = far;
         _fieldOfView = fov;
