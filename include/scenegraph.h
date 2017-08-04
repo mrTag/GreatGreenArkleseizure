@@ -2,51 +2,63 @@
 #define transform_h__
 
 #include <glm/glm.hpp>
-#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 namespace Scenegraph
 {
-    /*
+    // Wrapper struct which binds a member variable to a member function callback.
+    // Callback function is called upon assignment to the variable.
     template <typename T, class C>
-    struct UpdatingProperty
+    class UpdatingProperty
     {
-        T _data;
+        private:
+        T _val;
         void (C::*_updateCallback)() = NULL;
-        
-        UpdatingProperty(T initialData, void (C::*callback)())
-        {
-            _data = initialData;
-            _updateCallback = callback;
-        }
+
+        public:
+        void SetValueAndBypassCallback(T newValue) { _val = newValue; }
+        UpdatingProperty(T initValue, void (C::*callback)()) :
+        _val(initValue),
+        _updateCallback(callback)
+        {}
 
         T& operator=(const T& other)
         {
-            return _data = other;
             if (_updateCallback != NULL) _updateCallback();
+            return _val = other;
         }
-        operator T() const { return _data; }
+        operator T() const { return _val; }
     };
-    */
 
-    struct Transform
+    class Transform
     {
-        glm::vec3 _position;
-        glm::vec3 _scale;
-        glm::quat _orientation;
+        private:
         Transform* _parent;
-        void SetParent(Transform* parent);
+
+        public:
+        Transform();
+        Transform(glm::vec3 position);
+        UpdatingProperty<glm::vec3, Transform> _localPosition;
+        UpdatingProperty<glm::vec3, Transform> _worldPosition;
+        UpdatingProperty<glm::vec3, Transform> _localScale;
+        UpdatingProperty<glm::quat, Transform> _localOrientation;
         glm::mat4 _localSpaceModelMatrix;
         glm::mat4 _worldSpaceModelMatrix;
         
-        // TODO: call these, as soon as position, scale, orientation, or parent changes
-        void UpdateLocalSpaceModelMatrix();
-        void UpdateWorldSpaceModelMatrix();
+        void SetParent(Transform* parent);
+        void UpdateModelMatrices();
 
         /* TODO:
         void AddComponent(Component* c);
         void RemoveComponent(Component* c);
         Component* GetComponent<typename T>();
         int GetComponents<typename T>(Component* components_out);
+        */
+
+        /* TODO:
+        glm::vec3 TransformPosition(glm::vec3 v);
+        glm::vec3 TransformDirection(glm::vec3 v);
+        glm::vec3 GetForward();
         */
     };
 
@@ -57,7 +69,7 @@ namespace Scenegraph
         bool _enabled;
 
         public:
-        Component(Transform* t) : transform(t) {}
+        Component(Transform* t) : _transform(t) {}
         virtual void FrameUpdate() = 0;
         virtual ~Component() {}
     };

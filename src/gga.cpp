@@ -20,7 +20,8 @@ void *__gxx_personality_v0;
 
 // global variables
 GLuint program;
-Rendering::Camera camera (0.1f, 100.0f, 45.0f);
+Scenegraph::Transform camera_transform(glm::vec3(3, 3, 4));
+Rendering::Camera camera(&camera_transform, 0.1f, 100.0f, 45.0f);
 GLuint matrixID;
 GLuint colorID;
 GLuint vertexID;

@@ -5,34 +5,32 @@ namespace Rendering
     /************************************/
     /*              CAMERA              */
     /************************************/
-    Camera::Camera(Transform* t)
+    Camera::Camera(Transform* t) :
+    Component(t),
+    _near(0.1f), _far(100.0f), _fieldOfView(45.0f)
     {
-        // TODO: take transform as input
-        _transform = t;
-        _near = 0.1f;
-        _far = 100.0f;
-        _fieldOfView = 45.0f;
-        _position = glm::vec3(0, 0, 0);
         _forwardDirection = glm::vec3(0, 0, 1);
         _upDirection = glm::vec3(0, 1, 0);
     }
 
-    Camera::Camera(float near, float far, float fov)
+    Camera::Camera(Transform* t, float near, float far, float fov) :
+    Component(t),
+    _near(near), _far(far), _fieldOfView(fov)
     {
-        // TODO: take transform as input
-        _transform = t;
-        _near = near;
-        _far = far;
-        _fieldOfView = fov;
+        _forwardDirection = glm::vec3(0, 0, 1);
+        _upDirection = glm::vec3(0, 1, 0);
     }
 
     void Camera::FrameUpdate()
     {
         // TODO: get position and vectors from transform
         _viewMatrix = glm::lookAt(
-            transform->_position,
-            _position + _forwardDirection,
-            _upDirection
+            (glm::vec3)_transform->_worldPosition,
+            glm::vec3(0, 0, 0),
+            glm::vec3(0, 1, 0)
+            //(glm::vec3)_transform->_worldPosition,
+            //glm::vec3(0.0f),
+            //_upDirection
         );
 
         _projectionMatrix = glm::perspective(

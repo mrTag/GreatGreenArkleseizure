@@ -7,7 +7,9 @@
 
 namespace Rendering
 {
-    class Camera : public Scenegraph::Component
+    using namespace Scenegraph;
+
+    class Camera : public Component
     {
         private:
         float _fieldOfView;
@@ -20,8 +22,8 @@ namespace Rendering
         glm::mat4 _projectionMatrix;
 
         public:
-        Camera(Transform* t);
-        Camera(Transform* t, float near, float far, float fov);
+        Camera(Transform *t);
+        Camera(Transform *t, float near, float far, float fov);
         void FrameUpdate();
         glm::mat4 GetViewProjectionMatrix();
     };
