@@ -11,5 +11,9 @@
         "tinycthread.c": "cpp",
         "boing.c": "cpp",
         "particles.c": "cpp"
+        "initializer_list": "cpp",
+        "type_traits": "cpp",
+        "vector": "cpp",
+        "xstring": "cpp"
     }
 }
