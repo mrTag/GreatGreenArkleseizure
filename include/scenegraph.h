@@ -48,11 +48,12 @@ namespace Scenegraph
         void SetParent(Transform* parent);
         void UpdateModelMatrices();
 
+        template<class T>
+        T* GetComponent();
         /* TODO:
         void AddComponent(Component* c);
         void RemoveComponent(Component* c);
-        Component* GetComponent<typename T>();
-        int GetComponents<typename T>(Component* components_out);
+        int GetComponents<typename T>(T* components_out);
         */
 
         /* TODO:

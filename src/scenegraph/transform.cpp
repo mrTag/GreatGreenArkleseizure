@@ -1,4 +1,5 @@
 #include <glm/gtc/matrix_transform.hpp>
+#include <type_traits>
 #include "scenegraph.h"
 
 namespace Scenegraph
@@ -25,7 +26,16 @@ namespace Scenegraph
 
     void Transform::SetParent(Transform* parent)
     {
-        // TODO: check for circular parenting! cycles are nor allowed!
+        Transform* checkedParent = parent;
+        while(checkedParent->_parent != NULL)
+        {
+            if (checkedParent->_parent == this)
+            {
+                // ERROR! circular parent relationships are not allowed!
+                return;
+            }
+            checkedParent = checkedParent->_parent;
+        }
         _parent = parent;
     }
 
@@ -48,5 +58,13 @@ namespace Scenegraph
             currentParent = currentParent->_parent;
             if (currentParent == this) break;
         }
+    }
+
+    template<class T>
+    T* Transform::GetComponent()
+    {
+        static_assert(std::is_base_of<Component, T>::value, "T must inherit from Component");
+        // TODO: implement
+        return NULL;
     }
 }

@@ -121,6 +121,10 @@ solution "gga"
       "StaticRuntime"
    }
    
+   buildoptions {
+      "-std=c++11"
+   }
+
    includedirs {
       "./lib",
       "./include",
