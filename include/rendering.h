@@ -20,6 +20,7 @@ namespace Rendering
         glm::vec3 _upDirection;
         glm::mat4 _viewMatrix;
         glm::mat4 _projectionMatrix;
+        glm::mat4 _viewProjectionMatrix;
 
         public:
         Camera(Transform *t);

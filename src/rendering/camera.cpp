@@ -21,6 +21,7 @@ namespace Rendering
         _upDirection = glm::vec3(0, 1, 0);
     }
 
+    // TODO: update camera matrices only when its transform changes
     void Camera::FrameUpdate()
     {
         // TODO: get position and vectors from transform
@@ -39,10 +40,12 @@ namespace Rendering
             _near,
             _far
         );
+
+        _viewProjectionMatrix = _projectionMatrix * _viewMatrix;
     }
 
     glm::mat4 Camera::GetViewProjectionMatrix()
     {
-        return _projectionMatrix * _viewMatrix;
+        return _viewProjectionMatrix;
     }
 }
