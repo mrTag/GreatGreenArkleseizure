@@ -20,7 +20,7 @@ void *__gxx_personality_v0;
 
 // global variables
 GLuint program;
-Scenegraph::Transform camera_transform(glm::vec3(3, 3, 4));
+Scenegraph::Transform camera_transform(glm::vec3(3, 3, 6));
 Rendering::Camera camera(&camera_transform, 0.1f, 100.0f, 45.0f);
 GLuint matrixID;
 GLuint colorID;
@@ -143,6 +143,7 @@ void mainLoop(GLFWwindow* window)
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
+		camera_transform._localPosition = (glm::vec3)camera_transform._localPosition + glm::vec3(0.0f, 0.0f, -0.1f);
 		camera.FrameUpdate();
 		Input::Mouse::FrameUpdate();
 		render(window);

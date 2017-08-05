@@ -4,6 +4,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/quaternion.hpp>
 
+#define CALL_MEMBER_FN(ptrToObject, ptrToMember) ((ptrToObject)->*(ptrToMember))
+
 namespace Scenegraph
 {
     // Wrapper struct which binds a member variable to a member function callback.
@@ -11,21 +13,25 @@ namespace Scenegraph
     template <typename T, class C>
     class UpdatingProperty
     {
+        using CallbackFunction = void (C::*)();
         private:
         T _val;
-        void (C::*_updateCallback)() = NULL;
+        C* _objPtr;
+        CallbackFunction _updateCallback = NULL;
 
         public:
         void SetValueAndBypassCallback(T newValue) { _val = newValue; }
-        UpdatingProperty(T initValue, void (C::*callback)()) :
+        UpdatingProperty(T initValue, C* obj, CallbackFunction callback) :
         _val(initValue),
+        _objPtr(obj),
         _updateCallback(callback)
         {}
 
         T& operator=(const T& other)
         {
-            if (_updateCallback != NULL) _updateCallback();
-            return _val = other;
+            _val = other;
+            if (_updateCallback != NULL) CALL_MEMBER_FN(_objPtr, _updateCallback)();
+            return _val;
         }
         operator T() const { return _val; }
     };
@@ -44,8 +50,11 @@ namespace Scenegraph
         UpdatingProperty<glm::quat, Transform> _localOrientation;
         glm::mat4 _localSpaceModelMatrix;
         glm::mat4 _worldSpaceModelMatrix;
+        glm::mat4 _inverseWorldSpaceModelMatrix;
         
         void SetParent(Transform* parent);
+        void LocalPostionChanged();
+        void WorldPositionChanged();
         void UpdateModelMatrices();
 
         template<class T>
