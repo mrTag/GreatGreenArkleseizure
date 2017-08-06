@@ -1,6 +1,7 @@
 #ifndef rendering_h__
 #define rendering_h__
 
+#include "GL/glew.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "scenegraph.h"
@@ -8,6 +9,25 @@
 namespace Rendering
 {
     using namespace Scenegraph;
+
+    class Renderer : public Component
+    {
+        public:
+        Renderer(Transform *t);
+        void FrameUpdate();
+    };
+
+    class ShaderProgram
+    {
+        private:
+        GLuint _id;
+        GLuint _vertexShaderId;
+        GLuint _fragmetShaderId;
+
+        public:
+        bool Init(const char* vertexShaderSource, const char* fragmentShaderSource);
+        ~ShaderProgram();
+    };
 
     class Camera : public Component
     {
@@ -28,8 +48,6 @@ namespace Rendering
         void FrameUpdate();
         glm::mat4 GetViewProjectionMatrix();
     };
-
-    
 }
 
 #endif // rendering_h__

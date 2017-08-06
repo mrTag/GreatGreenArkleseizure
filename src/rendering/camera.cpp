@@ -2,9 +2,6 @@
 
 namespace Rendering
 {
-    /************************************/
-    /*              CAMERA              */
-    /************************************/
     Camera::Camera(Transform* t) :
     Component(t),
     _near(0.1f), _far(100.0f), _fieldOfView(45.0f)

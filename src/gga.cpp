@@ -22,7 +22,8 @@ void *__gxx_personality_v0;
 GLuint program;
 Scenegraph::Transform camera_transform(glm::vec3(3, 3, 6));
 Rendering::Camera camera(&camera_transform, 0.1f, 100.0f, 45.0f);
-GLuint matrixID;
+GLuint viewProjMatrixID;
+GLuint modelMatrixID;
 GLuint colorID;
 GLuint vertexID;
 static const GLfloat triangle_vertices[] = {
@@ -47,9 +48,10 @@ bool init_resources(void)
 	const char* vs_source =
 		"#version 330 core\n"
 		"layout(location = 0) in vec3 vertexPosition_modelspace;"
-		"uniform mat4 MVP;"
+		"uniform mat4 viewProjMatrix;"
+		"uniform mat4 modelMatrix;"
 		"void main(void) {"
-		"  gl_Position = MVP * vec4(vertexPosition_modelspace, 1.0);"
+		"  gl_Position = viewProjMatrix * modelMatrix * vec4(vertexPosition_modelspace, 1.0);"
 		"}";
 	glShaderSource(vs, 1, &vs_source, NULL);
 	glCompileShader(vs);
@@ -91,7 +93,8 @@ bool init_resources(void)
 	glBindBuffer(GL_ARRAY_BUFFER, vertexID);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(triangle_vertices), triangle_vertices, GL_STATIC_DRAW);
 
-	matrixID = glGetUniformLocation(program, "MVP");
+	viewProjMatrixID = glGetUniformLocation(program, "viewProjMatrix");
+	modelMatrixID = glGetUniformLocation(program, "modelMatrix");
 	colorID = glGetUniformLocation(program, "tri_color");
 
 	return true;
@@ -99,8 +102,10 @@ bool init_resources(void)
 
 void render(GLFWwindow* window)
 {
-	glm::mat4 mvp = camera.GetViewProjectionMatrix();
-	glUniformMatrix4fv(matrixID, 1, GL_FALSE, &mvp[0][0]);
+	glm::mat4 vpMatrix = camera.GetViewProjectionMatrix();
+	glm::mat4 modelMatrix = glm::mat4(1.0f);
+	glUniformMatrix4fv(viewProjMatrixID, 1, GL_FALSE, &vpMatrix[0][0]);
+	glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, &modelMatrix[0][0]);
 
 	glm::vec3 color(1.0, 0.0, 0.0);
 	if (Input::Mouse::GetButton(1))
