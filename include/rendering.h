@@ -12,6 +12,9 @@ namespace Rendering
 
     class Renderer : public Component
     {
+        private:
+        ShaderProgram* _shader;
+
         public:
         Renderer(Transform *t);
         void FrameUpdate();
@@ -22,10 +25,16 @@ namespace Rendering
         private:
         GLuint _id;
         GLuint _vertexShaderId;
-        GLuint _fragmetShaderId;
+        GLuint _fragmentShaderId;
+        GLuint _vertexBufferId;
+        GLuint _viewProjMatrixId;
+        GLuint _modelMatrixID;
+        GLuint _colorID;
 
         public:
-        bool Init(const char* vertexShaderSource, const char* fragmentShaderSource);
+        bool InitProgram(const char* vertexShaderSource, const char* fragmentShaderSource);
+        void InitBuffers(size_t vertexBufferSize, GLfloat* vertexBufferPtr);
+        GLuint GetID() { return _id; }
         ~ShaderProgram();
     };
 
