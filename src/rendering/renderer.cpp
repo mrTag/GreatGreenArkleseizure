@@ -6,7 +6,5 @@ namespace Rendering
     {}
 
     void Renderer::FrameUpdate()
-    {
-
-    }
+    {}
 }

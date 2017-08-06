@@ -10,16 +10,6 @@ namespace Rendering
 {
     using namespace Scenegraph;
 
-    class Renderer : public Component
-    {
-        private:
-        ShaderProgram* _shader;
-
-        public:
-        Renderer(Transform *t);
-        void FrameUpdate();
-    };
-
     class ShaderProgram
     {
         private:
@@ -36,6 +26,16 @@ namespace Rendering
         void InitBuffers(size_t vertexBufferSize, GLfloat* vertexBufferPtr);
         GLuint GetID() { return _id; }
         ~ShaderProgram();
+    };
+
+    class Renderer : public Component
+    {
+        private:
+        ShaderProgram* _shader;
+
+        public:
+        Renderer(Transform *t);
+        void FrameUpdate();
     };
 
     class Camera : public Component

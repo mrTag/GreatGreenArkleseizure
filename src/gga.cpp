@@ -11,6 +11,7 @@
 #include "scenegraph.h"
 #include "input.h"
 #include "rendering.h"
+#include "time_update.h"
 
 using namespace std;
 
@@ -40,6 +41,8 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 bool init_resources(void)
 {
+	Time::InitTime();
+
 	GLint compile_ok = GL_FALSE;
 	GLint link_ok = GL_FALSE;
 	
@@ -147,8 +150,9 @@ void mainLoop(GLFWwindow* window)
 {
 	while (!glfwWindowShouldClose(window))
 	{
+		Time::UpdateTime();
 		glfwPollEvents();
-		camera_transform._localPosition = (glm::vec3)camera_transform._localPosition + glm::vec3(0.0f, 0.0f, -0.1f);
+		camera_transform._localPosition = (glm::vec3)camera_transform._localPosition + glm::vec3(0.0f, 0.0f, -1.0f) * Time::deltaTime;
 		camera.FrameUpdate();
 		Input::Mouse::FrameUpdate();
 		render(window);
