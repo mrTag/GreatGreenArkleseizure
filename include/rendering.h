@@ -9,6 +9,25 @@
 namespace Rendering
 {
     using namespace Scenegraph;
+    
+    class Camera;
+    class ShaderProgram;
+    class Renderer;
+
+    class System
+    {
+        friend Camera;
+        friend Renderer;
+        
+        private:
+        System() {}
+        static Camera* _currentCamera;
+        static void RegisterRenderer();
+        static void UnregisterRenderer();
+
+        public:
+        static void RenderScene();
+    };
 
     class ShaderProgram
     {
@@ -30,12 +49,17 @@ namespace Rendering
 
     class Renderer : public Component
     {
+        friend System;
+
         private:
         ShaderProgram* _shader;
 
         public:
         Renderer(Transform *t);
         void FrameUpdate();
+        
+        private:
+        void Render();
     };
 
     class Camera : public Component
@@ -55,6 +79,7 @@ namespace Rendering
         Camera(Transform *t);
         Camera(Transform *t, float near, float far, float fov);
         void FrameUpdate();
+        void SetAsCurrent();
         glm::mat4 GetViewProjectionMatrix();
     };
 }

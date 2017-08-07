@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <iostream>
 #include "rendering.h"
 
 using namespace std;
@@ -58,8 +58,8 @@ namespace Rendering
         glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
         glBufferData(GL_ARRAY_BUFFER, vertexBufferSize, vertexBufferPtr, GL_STATIC_DRAW);
 
-        _viewProjMatrixID = glGetUniformLocation(program, "viewProjMatrix");
-	    _modelMatrixID = glGetUniformLocation(program, "modelMatrix");
-	    _colorID = glGetUniformLocation(program, "tri_color");
+        _viewProjMatrixId = glGetUniformLocation(_id, "viewProjMatrix");
+	    _modelMatrixID = glGetUniformLocation(_id, "modelMatrix");
+	    _colorID = glGetUniformLocation(_id, "tri_color");
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Rendering
 {
+    Camera* System::_currentCamera = NULL;
+
     Camera::Camera(Transform* t) :
     Component(t),
     _near(0.1f), _far(100.0f), _fieldOfView(45.0f)
@@ -16,6 +18,11 @@ namespace Rendering
     {
         _forwardDirection = glm::vec3(0, 0, 1);
         _upDirection = glm::vec3(0, 1, 0);
+    }
+
+    void Camera::SetAsCurrent()
+    {
+        System::_currentCamera = this;
     }
 
     // TODO: update camera matrices only when its transform changes
